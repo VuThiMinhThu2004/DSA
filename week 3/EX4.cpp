@@ -17,6 +17,7 @@ class Queue{
 private:
     Node *head = nullptr;
     Node *tail = nullptr;
+    int size = 0;
 public:
     bool isEmpty() {
         if (head == nullptr) return true;
@@ -25,7 +26,7 @@ public:
 
     void insertTail(int value) {
         Node *newNode = new Node(value);
-
+    
         if (head == nullptr) {//isEmpty
             head = newNode;
             tail = newNode;
@@ -35,17 +36,28 @@ public:
             newNode->prev = tail;
             tail = newNode;
         }
+        ++size;
     }
 
-    void deleteHead(int &front) {
+    int getFront() {
+        if (isEmpty()) return -1;
+        return head->value;
+    }
+
+    int getSize() {
+        return size;
+    }
+
+    void deleteHead() {
         if (isEmpty()) {
             return;
         }
-        front = head->value;
         
         Node *temp = head;
         head = head->next;
         delete temp;
+
+        --size;
     }
 
     void printList() {
@@ -66,8 +78,7 @@ int main() {
             int data; cin >> data;
             list.insertTail(data);
         } else if (s == "dequeue") {//remove
-            int front = -1;
-            list.deleteHead(front);
+            list.deleteHead();
         }
     }
 
