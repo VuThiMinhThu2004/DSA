@@ -12,10 +12,15 @@ int countNo(int n) {
     return res;
 }
 int main() {
-    int q = 6;
-    while (q--) {
-        string s; getline(cin,s);
-
+    queue<string> q;
+    string s;
+    while (cin >> s) {
+        q.push(s);
+    }
+    while (!q.empty()) {      
+        string s = q.front();
+        q.pop();
+        
         if (s.substr(0,6) == "Insert") {
             int Id;
             sscanf(s.c_str(), "Insert(%d,%[^,],%[^)])", &Id);
