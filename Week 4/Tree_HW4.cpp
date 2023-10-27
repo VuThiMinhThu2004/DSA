@@ -39,7 +39,7 @@ private:
 public:
 
     int getHeight(Node *node) {
-        if (node == nullptr) return 0;
+        if (node == nullptr) return 0;//Tinh ca node -> h tu nut goc | theo toan roi rac thi return -1
         int leftHeight = getHeight(node->left);
         int rightHeight = getHeight(node->right);
         return max(leftHeight, rightHeight) + 1;
@@ -153,5 +153,5 @@ Thì output sẽ là:
 1  2  4  5  3
 4  5  2  3  1
 
-4  2  5  1  3 #Đề sai: vì 2 là cha của 4 và 5 -> không phải cây tìm kiếm nhị phân.
+4  2  5  1  3 #out cua Đề sai: vì 2 là cha của 4 và 5 -> không phải cây tìm kiếm nhị phân.
 */

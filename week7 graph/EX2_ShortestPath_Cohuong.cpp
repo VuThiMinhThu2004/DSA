@@ -1,6 +1,6 @@
 #include "bits/stdc++.h"
 using namespace std;
-
+#define INF 1 << 30
 int n,m,s,t;
 bool visited[1005];
 vector<int> a[1005];
@@ -24,6 +24,41 @@ void BFS(int u) {
             }
         }
     }
+}
+
+vector<int> bfs(int n, int m, vector<vector<int>> edges, int s) {
+    vector<int> dist(n, INF);
+    vector<bool> visited(n, false);
+    queue<int> Q;
+    
+    dist[s] = 0;//dist[start]
+    Q.push(s);
+    visited[s] = true;
+    
+    while (!Q.empty()) {
+        int curr = Q.front(); Q.pop();
+        
+        for (int i = 0; i < edges[curr].size(); i++) {
+            int neighbour = edges[curr][i];
+            
+            if (!visited[neighbour] && dist[neighbour] > dist[curr] + 1) {
+                visited[neighbour] = true;
+                dist[neighbour] = dist[curr] + 1;
+                Q.push(neighbour);
+            }
+        }
+    }
+    
+    for (int i = 0; i < n; i++) {
+        if (i != s) {
+            if (dist[i] == INF) {
+                dist[i] = -1;
+            } else {
+                dist[i] *= 6;
+            }
+        }
+    }
+    return dist;
 }
 
 void path(int s, int t) {
