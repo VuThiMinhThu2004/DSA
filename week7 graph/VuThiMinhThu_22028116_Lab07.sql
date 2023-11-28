@@ -77,17 +77,21 @@ WHERE customerNumber IS NULL;
 
 /*
 1. Đưa ra thông tin về các nhân viên và tên văn phòng nơi họ làm việc.
-2. Đưa ra thông tin về tên khách hàng và tên các sản phẩm họ đã mua.
-3. Đưa ra thông tin về các mặt hàng chưa có ai đặt mua.
-4. Đưa ra thông tin về các đơn hàng trong tháng 3/2005 (gồm orderDate, 
+ Đưa ra thông tin về tên khách hàng và tên các sản phẩm họ đã mua.
+2. Đưa ra thông tin về các mặt hàng chưa có ai đặt mua.
+3. Đưa ra thông tin về các đơn hàng trong tháng 3/2005 (gồm orderDate, 
 requiredDate, Status) và tổng giá trị của mỗi đơn hàng .
-5. Đưa ra thông tin về các dòng sản phẩm và số lượng sản phẩm của dòng sản phẩm 
-đó. Sắp xếp theo thứ tự số lượng giảm dần.*/
-
+4. Đưa ra thông tin về các dòng sản phẩm và số lượng sản phẩm của dòng sản phẩm 
+đó. Sắp xếp theo thứ tự số lượng giảm dần.
+5. Ten khach hang va so tien ma ho da tra
+*/
+1:
 SELECT e.employeeNumber, CONCAT(e.lastName, " ", e.firstName), Of.officeCode
 FROM employees e
 INNER JOIN offices Of ON e.officeCode = Of.officeCode;
 
+SELECT *
+FROM employees NATURAL JION offices;
 
 SELECT C.customerNumber, c.customerName, OD.productCode, p.productName
 FROM customers C 
@@ -100,10 +104,42 @@ SELECT O.orderNumber
 FROM orders O 
 LEFT JOIN orderdetails OD ON O.orderNumber = OD.orderNumber;
 
+2:
+SELECT p.productCode, p.productName, od.quantityOrdered
+FROM products p LEFT JOIN orderdetails od ON  p.productCode = od.productCode
+WHERE od.quantityOrdered is NULL;
+    
+3:
+SELECT o.orderNumber, o.orderDate, o.requiredDate, o.shippedDate, SUM(od.quantityOrdered * od.priceEach) as total
+FROM orders o INNER JOIN orderdetails od ON o.orderNumber = od.orderNumber
+WHERE o.orderDate >= "2003/03/01" AND o.orderDate <= "2003/03/31"
+GROUP BY o.orderNumber
+ORDER BY total DESC;
+
+
+4:
+SELECT pl.productLine, pl.textDescription, pl.htmlDescription, COUNT(*) AS total 
+FROM products p INNER JOIN productlines pl ON p.productLine = pl.productLine
+GROUP BY p.productLine
+ORDER BY total ASC;
+
+5:
+SELECT c.customerNumber, SUM(amount) AS total
+FROM customers c, payments p
+WHERE c.customerNumber = p.customerNumber
+GROUP BY c.customerNumber;
+           
+6: tinh them so tien no 
+
 
 
 1.SELECT Employees.*, Offices.addressLine1 FROM Employees INNER JOIN Offices ON Offices.officeCode = Employees.officeCode
 2.SELECT Customers.*, Products.productLine FROM Customers INNER JOIN Orders ON Orders.customerNumber = Customers.customerNumber INNER JOIN OrderDetails ON Orders.orderNumber = OrderDetails.orderNumber INNER JOIN Products ON OrderDetails.productCode = Products.productCode
-3.SELECT Products.productLine, products.productName FROM Products LEFT JOIN OrderDetails ON Products.productCode = OrderDetails.productCode WHERE OrderDetails.quantityOrdered IS NULL
-4.SELECT orderDate, requiredDate, status, (OrderDetails.quantityOrdered*OrderDetails.priceEach) AS TotalMoney FROM Orders INNER JOIN OrderDetails ON Orders.orderNumber = OrderDetails.orderNumber
-5.SELECT productLine, COUNT(*) AS Total FROM Products GROUP BY productLine ORDER BY Total DESC
+3.
+SELECT Products.productLine, products.productName FROM Products LEFT JOIN OrderDetails ON Products.productCode = OrderDetails.productCode WHERE OrderDetails.quantityOrdered IS NULL
+4.
+SELECT orderDate, requiredDate, status, (OrderDetails.quantityOrdered*OrderDetails.priceEach) AS TotalMoney FROM Orders INNER JOIN OrderDetails ON Orders.orderNumber = OrderDetails.orderNumber
+5.
+SELECT productLine, COUNT(*) AS Total FROM Products GROUP BY productLine ORDER BY Total DESC 
+
+

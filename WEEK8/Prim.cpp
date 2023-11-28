@@ -5,6 +5,7 @@ typedef pair<int, int> ii;
 const int maxn = 1005;
 int n, m;
 vector<ii> adj[maxn];
+
 bool taken[maxn];
 
 void input() {

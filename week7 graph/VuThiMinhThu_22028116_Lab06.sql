@@ -41,7 +41,6 @@ GROUP BY orderNumber
 ORDER BY Cost DESC
 LIMIT 10;
 
-
 SELECT productLine, SUM(quantityInStock) AS Total
 FROM products 
 GROUP BY productLine;
