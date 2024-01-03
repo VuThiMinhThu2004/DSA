@@ -77,6 +77,6 @@ int main() {
     BinarySearchTree g;
     while (q--) {
         int p,u; cin >> p >> u;
-        g.insert(p);
+        g.insert(p, u);
     }
 }

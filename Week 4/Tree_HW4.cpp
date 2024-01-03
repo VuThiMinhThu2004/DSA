@@ -37,7 +37,6 @@ private:
         inorderTraversal(node->right, res);
     } 
 public:
-
     int getHeight(Node *node) {
         if (node == nullptr) return 0;//Tinh ca node -> h tu nut goc | theo toan roi rac thi return -1
         int leftHeight = getHeight(node->left);
